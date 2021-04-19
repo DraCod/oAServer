@@ -1,6 +1,6 @@
 module.exports = app=>{
     const {INTEGER,DATE,STRING} = app.Sequelize;
-    return app.model.define("users",{
+    const user = app.model.define("users",{
         id:{
             type:INTEGER,
             primaryKey:true,
@@ -12,6 +12,13 @@ module.exports = app=>{
         createdAt:DATE,
         updatedAt:DATE
     })
+    user.associate=function(){
+        app.model.User.belongsTo(app.model.Purviews,{
+            foreiKey:'purviewId',
+            targetKey:'id',
+            as
+        })
+    }
 }
 
 // app.associate = function(){

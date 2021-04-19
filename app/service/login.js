@@ -10,7 +10,11 @@ class LoginService extends Service{
         if(user){
             return {
                 message:'登录成功',
-                status:200
+                status:200,
+                data:this.ctx.app.jwt.sign({
+                    id:user.dataValues.id,
+                    purviewId:user.dataValues.purviewId
+                },this.app.config.jwt.secret),
             }
         }else{
             this.ctx.status = 402;
@@ -19,6 +23,14 @@ class LoginService extends Service{
                 status:402
             }
         }
+    }
+
+    async test(){
+        // return this.ctx.model.Purviews.findOne({
+        //     where:{
+                
+        //     }
+        // })
     }
 }
 

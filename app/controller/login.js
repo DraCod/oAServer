@@ -14,6 +14,12 @@ class LoginController extends Controller{
         }
         ctx.body = await ctx.service.login.login(body);
     }
+
+    async test(){
+        // this.ctx.body = {
+        //     data:await this.ctx.service.login.test()
+        // }
+    }
 }
 
 module.exports = LoginController

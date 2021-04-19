@@ -24,7 +24,6 @@ module.exports = appInfo => {
     }
   },
 
-  
   config.cors = {
     origin:'*',
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
@@ -37,6 +36,10 @@ module.exports = appInfo => {
     database: 'oa',
     password:'123456',
     timezone: '+08:00'
+  }
+
+  config.jwt = {
+    secret:'cbl'
   }
 
   // add your user config here

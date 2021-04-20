@@ -13,12 +13,13 @@ module.exports = app=>{
         updatedAt:DATE
     })
     user.associate=function(){
-        app.model.User.belongsTo(app.model.Purviews,{
-            foreiKey:'purviewId',
+        app.model.Users.belongsTo(app.model.Purviews,{
+            foreignKey:'purviewId',
             targetKey:'id',
-            as
+            as:"purviews"
         })
     }
+    return user
 }
 
 // app.associate = function(){

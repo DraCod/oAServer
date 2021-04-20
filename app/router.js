@@ -5,7 +5,7 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  // const jwt=app.middleware.jwt();
-  router.post('/login', controller.login.login);
-  router.post('/test',jwt, controller.login.test);
+  const jwt=app.middleware.jwt();
+  router.post('/login', controller.login.login);//用户登录
+  router.get('/router-init',jwt, controller.login.getRouter);//初始化页面的路由
 };

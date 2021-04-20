@@ -8,6 +8,7 @@ module.exports = app=>{
         },
         path:STRING,
         label:STRING,
+        parents:INTEGER,
         createdAt:DATE,
         updatedAt:DATE,
     })

@@ -15,11 +15,13 @@ class LoginController extends Controller{
         ctx.body = await ctx.service.login.login(body);
     }
 
-    async test(){
-        // this.ctx.body = {
-        //     data:await this.ctx.service.login.test()
-        // }
+    //  根据用户权限获取可见的路由页面
+    async getRouter(){
+        const {ctx} = this
+        const user = ctx.$user;
+        ctx.body = await ctx.service.login.getRouter(user)
     }
+
 }
 
 module.exports = LoginController

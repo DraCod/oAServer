@@ -1,12 +1,12 @@
 module.exports = option=>{
-    return function(ctx, next){
+    return async function(ctx, next){
         try {
             const token = ctx.request.header.token;
             const user = ctx.app.jwt.verify(token)
             delete user.iat
             ctx.$user = user
             // console.log(ctx.$user)
-            next();
+            await next();
         } catch (error) {
             ctx.status = 401;
             ctx.body = {

@@ -9,13 +9,18 @@ class LoginService extends Service{
             }
         })
         if(user){
+            const token = this.ctx.app.jwt.sign({
+                id:user.dataValues.id,
+                purviewId:user.dataValues.purviewId
+            },this.app.config.jwt.secret)
+
+            //写入redis  键值对  键：用户信息的标识  值：token
+            await this.app.redis.set(user.dataValues.id,token);
+            // this.app.redis.set(user.dataValues.id,token)
             return {
                 message:'登录成功',
                 status:200,
-                data:this.ctx.app.jwt.sign({
-                    id:user.dataValues.id,
-                    purviewId:user.dataValues.purviewId
-                },this.app.config.jwt.secret),
+                data:token,
             }
         }else{
             this.ctx.status = 402;
@@ -45,7 +50,6 @@ class LoginService extends Service{
         })
         for (const row of routerList) {
             if(!row.dataValues.path){
-                console.log(row,'row')
                 row.dataValues.children = await this.ctx.model.Routers.findAll({
                     attributes:['id','path','label','parents'],
                     where:{

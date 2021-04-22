@@ -37,12 +37,13 @@ class LoginService extends Service{
                 id:purviewId
             }
         })
-        let where={};
+        let where={
+            parents:null
+        };
         if(purview.dataValues.routerId !== '0'){
             where.id={
                 [Sequelize.Op.or]:purview.dataValues.routerId.split(','),
             }
-            where.parents=null
         }
         const routerList = await this.ctx.model.Routers.findAll({
             where,

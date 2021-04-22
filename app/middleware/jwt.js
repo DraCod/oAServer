@@ -19,30 +19,18 @@ module.exports = option=>{
                 }
                 return
             }
-
-            // const redisToken = await ctx.app.redis.get(user.id)
-            // if(redisToken!==token){
-            //     ctx.status = 401;
-            //     ctx.body = {
-            //         status:401,
-            //         message:'请先重新登录',
-            //         data:'登录信息过期'
-            //     }
-            //     return
-            //     // console.log(redisToken,token)
-            // }
             delete user.iat
             ctx.$user = user
-            // console.log(redisToken,'redisToken')
-            await next();
         } catch (error) {
-            console.log(error)
+            console.dir(error)
             ctx.status = 401;
             ctx.body = {
                 status:401,
                 message:'请先登录',
                 data:error
             }
+            return
         }
+        await next();
     }
 }

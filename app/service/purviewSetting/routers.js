@@ -2,6 +2,7 @@ const Service = require('egg').Service;
 const Sequelize = require('sequelize')
 
 class PurviewSettingService extends Service{
+    //获取路由列表
     async getAllRouter({page,pageSize,label}){
         let limit=10;
         let offset=0;
@@ -37,6 +38,7 @@ class PurviewSettingService extends Service{
         }
     }
 
+    //添加路由
     async addRouter(body){
         const message=await this.valid(body);
         if(message) return message
@@ -51,6 +53,15 @@ class PurviewSettingService extends Service{
         }
     }
 
+    //编辑路由
+    /**
+     * 
+     * @param {Object} body 
+     * @returns {
+     *      status:状态码
+     *      message:提示信息
+     * }
+     */
     async editRouter(body){
         const message=await this.valid(body,true);
         if(message) return message
@@ -69,6 +80,7 @@ class PurviewSettingService extends Service{
         }
     }
 
+    //验证参数信息
     async valid(body,edit=false){
         let where={
             label:body.label
@@ -136,6 +148,45 @@ class PurviewSettingService extends Service{
         return this.ctx.model.Routers.findOne({
             where
         })
+    }
+
+    async deleteRouter({id}){
+        if(isNaN(id)){
+            this.ctx.status = 402;
+            return {
+                status:402,
+                message:'参数错误'
+            }
+        }
+        const find = await this.ctx.model.Routers.findOne({
+            where:{
+                id:+id
+            }
+        })
+        if(!find){
+            this.ctx.status = 402;
+            return{
+                status:402,
+                message:'该id不存在'
+            }
+        }
+        const count = await this.ctx.model.Routers.destroy({
+            where:{
+                id:+id
+            }
+        })
+        if(count>0){
+            return{
+                status:200,
+                message:'删除成功'
+            }
+        }else{
+            this.ctx.status = 402;
+            return{
+                status:402,
+                message:'删除失败'
+            }
+        }
     }
 }
 

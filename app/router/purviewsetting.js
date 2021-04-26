@@ -8,4 +8,6 @@ module.exports = app=>{
 
 
     router.get('/purview-list',jwt,controller.purviewSetting.purview.getPurviewList)//获取权限列表
+    router.get('/router-tree',jwt,controller.purviewSetting.purview.routerTree)//路由树
+    router.post('/add-purview',jwt,controller.purviewSetting.purview.addPurview)//添加权限角色
 }

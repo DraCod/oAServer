@@ -76,6 +76,24 @@ class PurviewService extends Service{
     }
 
     async addPurview({purview,router}){
+        const result = await this.vialPurview(router)
+        if(result){
+            return{
+                status:402,
+                message:result
+            }
+        }
+        await this.ctx.model.Purviews.create({
+            purview,
+            routerId:router.join(',')
+        })
+        return {
+            message:'新增成功',
+            status:200
+        }
+    }
+
+    async vialPurview(router){
         const list = await this.ctx.model.Routers.findAll({
             attributes:['id'],
             where:{
@@ -110,12 +128,98 @@ class PurviewService extends Service{
                 // }
             // })
         }
-        await this.ctx.model.Purviews.create({
-            purview,
-            routerId:router.join(',')
+    }
+
+    async purviewDetail({id}){
+        id=+id;
+        const purview = await this.ctx.model.Purviews.findOne({
+            where:{
+                id
+            }
+        })
+        const list = await this.ctx.model.Routers.findAll({
+            attributes:['id','path','label','parents']
+        });
+        const purviewRouter = purview.dataValues.routerId.split(',')
+        list.forEach(ro=>{
+            const find = purviewRouter.find(row=>row==ro.dataValues.id)
+            if(find){
+                ro.dataValues.check = true
+            }else{
+                ro.dataValues.check = false
+            }
+        })
+        const tree = list.filter(ro=>ro.dataValues.parents==null);
+        const other =  list.filter(ro=>ro.dataValues.parents!=null);
+        other.forEach(row=>{
+            const find = tree.find(ro=>ro.dataValues.id===row.dataValues.parents);
+            if(find.dataValues.children){
+                find.dataValues.children.push(row)
+            }else{
+                find.dataValues.children = [row]
+            }
+        })
+        purview.dataValues.tree = tree
+        return {
+            status:200,
+            data:purview,
+        }
+    }
+
+    async editPurview(body){
+        const find = await this.ctx.model.Purviews.findOne({
+            attributes:['id'],
+            where:{
+                id:body.id
+            }
+        })
+        if(!find){
+            this.ctx.status = 402
+            return{
+                status:402,
+                message:'不存在该角色id'
+            }
+        }
+        const result = await this.vialPurview(body.router)
+        if(result){
+            return{
+                status:402,
+                message:result
+            }
+        }
+        await this.ctx.model.Purviews.update({
+            routerId:body.router.join(','),
+            purview:body.purview
+        },{
+            where:{
+                id:body.id
+            }
         })
         return {
-            message:'新增成功',
+            status:200,
+            message:'更新成功'
+        }
+    }
+
+    async deletePurview({id}){
+        id=+id;
+        const find = await this.ctx.model.Purviews.findOne({
+            where:{
+                id
+            }
+        })
+        if(!find){
+            this.ctx.status = 402;
+            return{
+                status:402,
+                message:'不存在该角色id'
+            }
+        }
+        await this.ctx.model.Purviews.destroy({
+            where:{id}
+        })
+        return {
+            message:'删除成功',
             status:200
         }
     }

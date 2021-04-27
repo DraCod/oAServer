@@ -14,6 +14,21 @@ class PurviewController extends Controller{
         const {body} = this.ctx.request;
         this.ctx.body = await this.ctx.service.purviewSetting.purview.addPurview(body);
     }
+
+    async purviewDetail(){
+        const params = this.ctx.params
+        this.ctx.body = await this.ctx.service.purviewSetting.purview.purviewDetail(params);
+    }
+
+    async editPurview(){
+        const body = this.ctx.request.body;
+        this.ctx.body = await this.ctx.service.purviewSetting.purview.editPurview(body);
+    }
+
+    async deletePurview(){
+        const params = this.ctx.params
+        this.ctx.body = await this.ctx.service.purviewSetting.purview.deletePurview(params);
+    }
 }
 
 module.exports = PurviewController;

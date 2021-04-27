@@ -10,4 +10,12 @@ module.exports = app=>{
     router.get('/purview-list',jwt,controller.purviewSetting.purview.getPurviewList)//获取权限列表
     router.get('/router-tree',jwt,controller.purviewSetting.purview.routerTree)//路由树
     router.post('/add-purview',jwt,controller.purviewSetting.purview.addPurview)//添加权限角色
+    router.get('/purview-detail/:id',jwt,controller.purviewSetting.purview.purviewDetail)//角色详情
+    router.post('/edit-purview',jwt,controller.purviewSetting.purview.editPurview)//编辑角色权限
+    router.delete('/delete-purview/:id',jwt,controller.purviewSetting.purview.deletePurview)//删除角色
+
+
+
+    router.get('/account-list',controller.purviewSetting.account.accountList)//账号列表
+    router.post('/add-account',controller.purviewSetting.account.addAccount)//添加账号
 }

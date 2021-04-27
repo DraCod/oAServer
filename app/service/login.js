@@ -51,11 +51,17 @@ class LoginService extends Service{
         })
         for (const row of routerList) {
             if(!row.dataValues.path){
+                let where={
+                    parents:row.dataValues.id
+                }
+                if(purview.dataValues.routerId!='0'){
+                    where.id={
+                        [Sequelize.Op.or]:purview.dataValues.routerId.split(','),
+                    }
+                }
                 row.dataValues.children = await this.ctx.model.Routers.findAll({
                     attributes:['id','path','label','parents'],
-                    where:{
-                        parents:row.dataValues.id
-                    }
+                    where
                 })
                 delete row.dataValues.path
             }

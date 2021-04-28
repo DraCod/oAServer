@@ -1,6 +1,7 @@
 module.exports = app=>{
     const { router, controller } = app;
     const jwt=app.middleware.jwt();
+    const promise=app.middleware.promise();
     router.get('/router-list',jwt,controller.purviewSetting.routers.getAllRouter);//获取所有的页面路由
     router.post('/add-router',jwt,controller.purviewSetting.routers.addRouter);//添加新路由页面
     router.post('/edit-router',jwt,controller.purviewSetting.routers.editRouter);//添加新路由页面
@@ -16,6 +17,6 @@ module.exports = app=>{
 
 
 
-    router.get('/account-list',controller.purviewSetting.account.accountList)//账号列表
-    router.post('/add-account',controller.purviewSetting.account.addAccount)//添加账号
+    router.get('/account-list',jwt,promise,controller.purviewSetting.account.accountList)//账号列表
+    router.post('/add-account',jwt,controller.purviewSetting.account.addAccount)//添加账号
 }

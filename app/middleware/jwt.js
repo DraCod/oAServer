@@ -1,5 +1,6 @@
 module.exports = option=>{
     return async function(ctx, next){
+        console.log('我是第一个中间间')
         try {
             const token = ctx.request.header.token;
             const user = ctx.app.jwt.verify(token);

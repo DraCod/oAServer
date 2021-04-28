@@ -2,6 +2,7 @@ const Controller = require('egg').Controller;
 
 class AccountController extends Controller{
     async accountList(){
+        console.log('我是方法')
         this.ctx.body = await this.ctx.service.purviewSetting.account.accountList();
     }
 

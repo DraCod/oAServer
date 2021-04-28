@@ -1,16 +1,14 @@
 module.exports = app=>{
     const {INTEGER,DATE,STRING} = app.Sequelize;
-    const purview = app.model.define('purviews',{
+    const api = app.model.define('apis',{
         id:{
             type:INTEGER,
             primaryKey:true,
             autoIncrement:true,
         },
-        purview:STRING,
-        routerId:STRING,
-        apiId:STRING,
+        api:STRING,
         createdAt:DATE,
         updatedAt:DATE,
     })
-    return purview
+    return api
 }
